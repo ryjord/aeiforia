@@ -2,9 +2,10 @@
 import { REGION_COORDINATES } from "./regions";
 
 // Types
-import type { IRawRegionalResponse, IRegionalIntensity } from "./types";
+import type { IRawRegionalResponse, IRegionalIntensity, IRawGenerationResponse, INationalGenerationMix } from "./types";
 
 const REGIONAL_ENDPOINT = "https://api.carbonintensity.org.uk/regional";
+const GENERATION_ENDPOINT = "https://api.carbonintensity.org.uk/generation";
 const REVALIDATE_SECONDS = 1800;
 
 // Fetch live regional carbon intensity
@@ -33,4 +34,19 @@ export async function fetchRegionalIntensity(): Promise<IRegionalIntensity> {
     }));
 
   return { from: period.from, to: period.to, regions };
+}
+
+// Fetch the live GB-wide (national) generation mix
+export async function fetchNationalGenerationMix(): Promise<INationalGenerationMix> {
+  const res = await fetch(GENERATION_ENDPOINT, {
+    next: { revalidate: REVALIDATE_SECONDS },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Carbon Intensity API responded with ${res.status}`);
+  }
+
+  const body: IRawGenerationResponse = await res.json();
+
+  return { from: body.data.from, to: body.data.to, generationMix: body.data.generationmix };
 }

@@ -44,3 +44,17 @@ export interface IRegionalIntensity {
   to: string;
   regions: IRegionReading[];
 }
+
+export interface IRawGenerationResponse {
+  data: {
+    from: string;
+    to: string;
+    generationmix: IGenerationMixEntry[];
+  };
+}
+
+export interface INationalGenerationMix {
+  from: string;
+  to: string;
+  generationMix: IGenerationMixEntry[];
+}
