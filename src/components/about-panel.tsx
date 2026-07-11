@@ -18,9 +18,9 @@ export function AboutPanel({ nationalMix }: IAboutPanelProps) {
       </CardHeader>
       <CardContent className="space-y-4 text-sm text-white/70">
         <p>
-          Aeiforía is a live environmental data globe. Solid pins track the UK&apos;s National Grid carbon intensity —
-          how much CO₂ is released generating each unit of electricity, region by region. Ring markers worldwide show
-          live temperature and wind.
+          Aeiforía is a live environmental data globe. Larger pins track the UK&apos;s National Grid carbon intensity —
+          how much CO₂ is released generating each unit of electricity, region by region. Small dots worldwide show live
+          temperature and wind for every capital city — hover or tap one for details.
         </p>
         <p>
           UK grid intensity swings several-fold across a single day as wind, solar, and gas fall in and out of the mix.
@@ -36,8 +36,10 @@ export function AboutPanel({ nationalMix }: IAboutPanelProps) {
           )) }
         </div>
         <p className="border-t border-white/10 pt-3 text-xs text-white/50">
-          Ocean plastic tracking and live visitor presence are landing next.
+          The cloud layer is a stylised atmosphere shell for visual depth, not live satellite imagery — the pins and
+          dots are where the real data lives.
         </p>
+        <p className="text-xs text-white/50">Ocean plastic tracking and live visitor presence are landing next.</p>
         <p className="text-xs text-white/40">Sources: National Grid ESO Carbon Intensity API, Open-Meteo</p>
       </CardContent>
     </Card>

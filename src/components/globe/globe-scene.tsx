@@ -9,6 +9,7 @@ import { latLonToVector3 } from "@/lib/geo";
 import { Earth, EARTH_RADIUS } from "./earth";
 import { RegionMarker } from "./region-marker";
 import { WeatherMarker } from "./weather-marker";
+import { Clouds } from "./clouds";
 
 // Types
 import type { IRegionReading } from "@/lib/carbon-intensity/types";
@@ -27,9 +28,17 @@ interface IGlobeSceneProps {
   onSelectRegion: (region: IRegionReading) => void;
   cities: ICityWeather[];
   showWeather: boolean;
+  showClouds: boolean;
 }
 
-export function GlobeScene({ regions, selectedRegionId, onSelectRegion, cities, showWeather }: IGlobeSceneProps) {
+export function GlobeScene({
+  regions,
+  selectedRegionId,
+  onSelectRegion,
+  cities,
+  showWeather,
+  showClouds,
+}: IGlobeSceneProps) {
   return (
     <Canvas camera={ { position: INITIAL_CAMERA_POSITION, fov: 45 } }>
       <ambientLight intensity={ 0.6 } />
@@ -47,6 +56,7 @@ export function GlobeScene({ regions, selectedRegionId, onSelectRegion, cities, 
             />
           )) }
           { showWeather && cities.map((city) => <WeatherMarker key={ city.cityId } city={ city } />) }
+          { showClouds && <Clouds /> }
         </RotatingGlobe>
       </Suspense>
       <OrbitControls enablePan={ false } minDistance={ EARTH_RADIUS + 0.8 } maxDistance={ 12 } />

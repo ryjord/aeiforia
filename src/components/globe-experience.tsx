@@ -25,6 +25,7 @@ export function GlobeExperience({ initialData, initialNationalMix, initialCities
   const [cities, setCities] = useState(initialCities);
   const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
   const [showWeather, setShowWeather] = useState(true);
+  const [showClouds, setShowClouds] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -71,6 +72,7 @@ export function GlobeExperience({ initialData, initialNationalMix, initialCities
         onSelectRegion={ handleSelectRegion }
         cities={ cities }
         showWeather={ showWeather }
+        showClouds={ showClouds }
       />
       <div className="pointer-events-none absolute top-6 left-6">
         <div className="pointer-events-auto">
@@ -82,14 +84,22 @@ export function GlobeExperience({ initialData, initialNationalMix, initialCities
           <AboutPanel nationalMix={ nationalMix } />
         </div>
       </div>
-      <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2">
+      <div className="pointer-events-none absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
         <Button
           variant={ showWeather ? "default" : "outline" }
           size="sm"
           className="pointer-events-auto bg-black/70 text-white backdrop-blur-md hover:bg-black/90"
           onClick={ () => setShowWeather((current) => !current) }
         >
-          { showWeather ? `Hide global weather (${cities.length})` : `Show global weather (${cities.length})` }
+          { showWeather ? `Hide weather (${cities.length})` : `Show weather (${cities.length})` }
+        </Button>
+        <Button
+          variant={ showClouds ? "default" : "outline" }
+          size="sm"
+          className="pointer-events-auto bg-black/70 text-white backdrop-blur-md hover:bg-black/90"
+          onClick={ () => setShowClouds((current) => !current) }
+        >
+          { showClouds ? "Hide clouds" : "Show clouds" }
         </Button>
       </div>
     </div>
