@@ -1,46 +1,46 @@
-export type IntensityIndex = "very low" | "low" | "moderate" | "high" | "very high";
+export type IIntensityIndex = "very low" | "low" | "moderate" | "high" | "very high";
 
-export type FuelType = "biomass" | "coal" | "imports" | "gas" | "nuclear" | "other" | "hydro" | "solar" | "wind";
+export type IFuelType = "biomass" | "coal" | "imports" | "gas" | "nuclear" | "other" | "hydro" | "solar" | "wind";
 
-export interface GenerationMixEntry {
-  fuel: FuelType;
+export interface IGenerationMixEntry {
+  fuel: IFuelType;
   perc: number;
 }
 
-export interface RawRegion {
+export interface IRawRegion {
   regionid: number;
   dnoregion: string;
   shortname: string;
   intensity: {
     forecast: number;
-    index: IntensityIndex;
+    index: IIntensityIndex;
   };
-  generationmix: GenerationMixEntry[];
+  generationmix: IGenerationMixEntry[];
 }
 
-export interface RawRegionalResponse {
+export interface IRawRegionalResponse {
   data: [
     {
       from: string;
       to: string;
-      regions: RawRegion[];
+      regions: IRawRegion[];
     },
   ];
 }
 
-export interface RegionReading {
+export interface IRegionReading {
   regionId: number;
   dnoRegion: string;
   shortName: string;
   lat: number;
   lon: number;
   forecast: number;
-  index: IntensityIndex;
-  generationMix: GenerationMixEntry[];
+  index: IIntensityIndex;
+  generationMix: IGenerationMixEntry[];
 }
 
-export interface RegionalIntensity {
+export interface IRegionalIntensity {
   from: string;
   to: string;
-  regions: RegionReading[];
+  regions: IRegionReading[];
 }

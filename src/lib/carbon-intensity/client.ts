@@ -2,15 +2,13 @@
 import { REGION_COORDINATES } from "./regions";
 
 // Types
-import type { RawRegionalResponse, RegionalIntensity } from "./types";
+import type { IRawRegionalResponse, IRegionalIntensity } from "./types";
 
 const REGIONAL_ENDPOINT = "https://api.carbonintensity.org.uk/regional";
-
-// The API updates every 30 minutes — cache in step with that cadence.
 const REVALIDATE_SECONDS = 1800;
 
 // Fetch live regional carbon intensity
-export async function fetchRegionalIntensity(): Promise<RegionalIntensity> {
+export async function fetchRegionalIntensity(): Promise<IRegionalIntensity> {
   const res = await fetch(REGIONAL_ENDPOINT, {
     next: { revalidate: REVALIDATE_SECONDS },
   });
@@ -19,7 +17,7 @@ export async function fetchRegionalIntensity(): Promise<RegionalIntensity> {
     throw new Error(`Carbon Intensity API responded with ${res.status}`);
   }
 
-  const body: RawRegionalResponse = await res.json();
+  const body: IRawRegionalResponse = await res.json();
   const [period] = body.data;
 
   const regions = period.regions

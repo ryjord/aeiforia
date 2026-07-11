@@ -1,5 +1,5 @@
-// Approximate centroid for each GB DNO region (regionid 1-14).
-// Aggregates (England/Scotland/Wales/GB, regionid 15-18) are excluded — they overlap the pins above.
+// Approximate centroid for each GB DNO regions
+
 export const REGION_COORDINATES: Record<number, { lat: number; lon: number }> = {
   1: { lat: 57.4, lon: -4.2 }, // North Scotland
   2: { lat: 55.8, lon: -3.5 }, // South Scotland
