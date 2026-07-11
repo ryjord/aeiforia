@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Aeiforía",
-  description: "Aeiforía",
+  description: "A live, collaborative 3D globe of UK grid carbon intensity.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
