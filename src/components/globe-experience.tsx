@@ -4,30 +4,40 @@
 import { useEffect, useState } from "react";
 import { GlobeScene } from "@/components/globe/globe-scene";
 import { StatPanel } from "@/components/stat-panel";
+import { AboutPanel } from "@/components/about-panel";
 
 // Types
-import type { IRegionalIntensity, IRegionReading } from "@/lib/carbon-intensity/types";
+import type { IRegionalIntensity, IRegionReading, INationalGenerationMix } from "@/lib/carbon-intensity/types";
 
 const POLL_INTERVAL_MS = 5 * 60 * 1000;
 
 interface IGlobeExperienceProps {
   initialData: IRegionalIntensity;
+  initialNationalMix: INationalGenerationMix;
 }
 
-export function GlobeExperience({ initialData }: IGlobeExperienceProps) {
+export function GlobeExperience({ initialData, initialNationalMix }: IGlobeExperienceProps) {
   const [data, setData] = useState(initialData);
+  const [nationalMix, setNationalMix] = useState(initialNationalMix);
   const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
 
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const res = await fetch("/api/carbon-intensity");
-        if (!res.ok) {
-          return;
+        const [regionalRes, nationalRes] = await Promise.all([
+          fetch("/api/carbon-intensity"),
+          fetch("/api/national-mix"),
+        ]);
+
+        if (regionalRes.ok) {
+          const next: IRegionalIntensity = await regionalRes.json();
+          setData(next);
         }
 
-        const next: IRegionalIntensity = await res.json();
-        setData(next);
+        if (nationalRes.ok) {
+          const next: INationalGenerationMix = await nationalRes.json();
+          setNationalMix(next);
+        }
       } catch (error) {
         console.error("Failed to refresh carbon intensity:", error);
       }
@@ -48,6 +58,11 @@ export function GlobeExperience({ initialData }: IGlobeExperienceProps) {
       <div className="pointer-events-none absolute top-6 left-6">
         <div className="pointer-events-auto">
           <StatPanel regions={ data.regions } selectedRegion={ selectedRegion } updatedAt={ data.from } />
+        </div>
+      </div>
+      <div className="pointer-events-none absolute top-6 right-6">
+        <div className="pointer-events-auto">
+          <AboutPanel nationalMix={ nationalMix } />
         </div>
       </div>
     </div>

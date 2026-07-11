@@ -14,6 +14,9 @@ interface IStatPanelProps {
 
 export function StatPanel({ regions, selectedRegion, updatedAt }: IStatPanelProps) {
   const average = Math.round(regions.reduce((sum, region) => sum + region.forecast, 0) / regions.length);
+  const sorted = [...regions].sort((a, b) => a.forecast - b.forecast);
+  const cleanest = sorted[0];
+  const dirtiest = sorted[sorted.length - 1];
 
   return (
     <Card className="w-80 border-white/10 bg-black/70 text-white backdrop-blur-md">
@@ -29,6 +32,22 @@ export function StatPanel({ regions, selectedRegion, updatedAt }: IStatPanelProp
             <p className="text-sm text-white/70">GB average forecast</p>
             <p className="text-3xl font-semibold">{ average } gCO₂/kWh</p>
             <p className="text-xs text-white/50">Click a pin on the globe to inspect a region.</p>
+          </div>
+        ) }
+        { !selectedRegion && cleanest && dirtiest && (
+          <div className="space-y-1.5 border-t border-white/10 pt-3 text-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-white/50">Cleanest now</span>
+              <span>
+                { cleanest.shortName } · { cleanest.forecast } gCO₂/kWh
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-white/50">Dirtiest now</span>
+              <span>
+                { dirtiest.shortName } · { dirtiest.forecast } gCO₂/kWh
+              </span>
+            </div>
           </div>
         ) }
         <Legend />

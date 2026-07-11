@@ -1,13 +1,13 @@
 // Libs
-import { fetchRegionalIntensity } from "@/lib/carbon-intensity/client";
+import { fetchRegionalIntensity, fetchNationalGenerationMix } from "@/lib/carbon-intensity/client";
 import { GlobeExperience } from "@/components/globe-experience";
 
 export default async function Home() {
-  const initialData = await fetchRegionalIntensity();
+  const [initialData, initialNationalMix] = await Promise.all([fetchRegionalIntensity(), fetchNationalGenerationMix()]);
 
   return (
     <main className="h-dvh w-full bg-black">
-      <GlobeExperience initialData={ initialData } />
+      <GlobeExperience initialData={ initialData } initialNationalMix={ initialNationalMix } />
     </main>
   );
 }
