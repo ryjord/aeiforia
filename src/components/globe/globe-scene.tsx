@@ -16,7 +16,7 @@ import type { IRegionReading } from "@/lib/carbon-intensity/types";
 // point instead of the default (0,0,distance), which faces the Americas.
 const UK_CENTER_LAT = 54;
 const UK_CENTER_LON = -2;
-const CAMERA_DISTANCE = 5;
+const CAMERA_DISTANCE = 7.5;
 const INITIAL_CAMERA_POSITION = latLonToVector3(UK_CENTER_LAT, UK_CENTER_LON, CAMERA_DISTANCE).toArray();
 
 const ROTATION_SPEED = 0.03;
@@ -46,7 +46,7 @@ export function GlobeScene({ regions, selectedRegionId, onSelectRegion }: IGlobe
           )) }
         </RotatingGlobe>
       </Suspense>
-      <OrbitControls enablePan={ false } minDistance={ EARTH_RADIUS + 0.8 } maxDistance={ 8 } />
+      <OrbitControls enablePan={ false } minDistance={ EARTH_RADIUS + 0.8 } maxDistance={ 12 } />
     </Canvas>
   );
 }
