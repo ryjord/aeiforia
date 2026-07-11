@@ -128,3 +128,41 @@
     @apply font-sans;
   }
 }
+
+@keyframes weather-drift {
+  0%,
+  100% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes weather-flutter {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(2px) rotate(6deg);
+  }
+}
+
+@keyframes weather-flicker {
+  0%,
+  18%,
+  20%,
+  50%,
+  52%,
+  70%,
+  72%,
+  100% {
+    opacity: 1;
+  }
+  19%,
+  51%,
+  71% {
+    opacity: 0.35;
+  }
+}

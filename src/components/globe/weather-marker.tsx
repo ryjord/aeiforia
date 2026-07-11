@@ -6,6 +6,7 @@ import { Html } from "@react-three/drei";
 import { DoubleSide, Quaternion, Vector3 } from "three";
 import { latLonToVector3 } from "@/lib/geo";
 import { temperatureColor } from "@/lib/weather/color";
+import { WeatherIcon } from "@/components/weather-icon";
 import { EARTH_RADIUS } from "./earth";
 
 // Types
@@ -22,9 +23,7 @@ export function WeatherMarker({ city }: IWeatherMarkerProps) {
   const position = latLonToVector3(city.lat, city.lon, EARTH_RADIUS + 0.02);
   const color = temperatureColor(city.temperatureC);
 
-  // ringGeometry is flat in the XY plane by default — rotate it to face
-  // outward along the sphere's surface normal at this point, or it's edge-on
-  // (effectively invisible) from most camera angles.
+  // ringGeometry
   const outwardRotation = useMemo(() => {
     const normal = position.clone().normalize();
     return new Quaternion().setFromUnitVectors(RING_NORMAL, normal);
@@ -43,11 +42,14 @@ export function WeatherMarker({ city }: IWeatherMarkerProps) {
         <meshBasicMaterial color={ color } side={ DoubleSide } />
       </mesh>
       { isOpen && (
-        <Html distanceFactor={ 8 } occlude>
-          <div className="pointer-events-none rounded-md border border-white/10 bg-black/80 px-2 py-1 text-xs whitespace-nowrap text-white shadow-lg">
-            <div className="font-medium">{ city.name }</div>
-            <div className="text-white/70">
-              { Math.round(city.temperatureC) }°C · { Math.round(city.windSpeedKmh) } km/h wind
+        <Html distanceFactor={ 8 }>
+          <div className="pointer-events-none flex items-center gap-2 rounded-md border border-white/10 bg-black/80 px-2 py-1.5 text-xs whitespace-nowrap text-white shadow-lg">
+            <WeatherIcon code={ city.weatherCode } className="h-5 w-5 shrink-0 text-white/80" />
+            <div>
+              <div className="font-medium">{ city.name }</div>
+              <div className="text-white/70">
+                { Math.round(city.temperatureC) }°C · { Math.round(city.windSpeedKmh) } km/h wind
+              </div>
             </div>
           </div>
         </Html>
