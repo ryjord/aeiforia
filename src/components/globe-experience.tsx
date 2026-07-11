@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 // Types
 import type { IRegionalIntensity, IRegionReading, INationalGenerationMix } from "@/lib/carbon-intensity/types";
 import type { ICityWeather } from "@/lib/weather/types";
+import type { IMicroplasticGrid } from "@/lib/microplastics/types";
 
 const POLL_INTERVAL_MS = 5 * 60 * 1000;
 
@@ -17,15 +18,23 @@ interface IGlobeExperienceProps {
   initialData: IRegionalIntensity;
   initialNationalMix: INationalGenerationMix;
   initialCities: ICityWeather[];
+  initialMicroplastics: IMicroplasticGrid | null;
 }
 
-export function GlobeExperience({ initialData, initialNationalMix, initialCities }: IGlobeExperienceProps) {
+export function GlobeExperience({
+  initialData,
+  initialNationalMix,
+  initialCities,
+  initialMicroplastics,
+}: IGlobeExperienceProps) {
   const [data, setData] = useState(initialData);
   const [nationalMix, setNationalMix] = useState(initialNationalMix);
   const [cities, setCities] = useState(initialCities);
+  const [microplasticsGrid] = useState(initialMicroplastics);
   const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
   const [showWeather, setShowWeather] = useState(true);
   const [showClouds, setShowClouds] = useState(true);
+  const [showMicroplastics, setShowMicroplastics] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -73,6 +82,8 @@ export function GlobeExperience({ initialData, initialNationalMix, initialCities
         cities={ cities }
         showWeather={ showWeather }
         showClouds={ showClouds }
+        microplasticsGrid={ microplasticsGrid }
+        showMicroplastics={ showMicroplastics }
       />
       <div className="pointer-events-none absolute top-6 left-6">
         <div className="pointer-events-auto">
@@ -101,6 +112,16 @@ export function GlobeExperience({ initialData, initialNationalMix, initialCities
         >
           { showClouds ? "Hide clouds" : "Show clouds" }
         </Button>
+        { microplasticsGrid && (
+          <Button
+            variant={ showMicroplastics ? "default" : "outline" }
+            size="sm"
+            className="pointer-events-auto bg-black/70 text-white backdrop-blur-md hover:bg-black/90"
+            onClick={ () => setShowMicroplastics((current) => !current) }
+          >
+            { showMicroplastics ? "Hide ocean plastic" : "Show ocean plastic" }
+          </Button>
+        ) }
       </div>
     </div>
   );

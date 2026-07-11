@@ -10,10 +10,12 @@ import { Earth, EARTH_RADIUS } from "./earth";
 import { RegionMarker } from "./region-marker";
 import { WeatherMarker } from "./weather-marker";
 import { Clouds } from "./clouds";
+import { MicroplasticsLayer } from "./microplastics-layer";
 
 // Types
 import type { IRegionReading } from "@/lib/carbon-intensity/types";
 import type { ICityWeather } from "@/lib/weather/types";
+import type { IMicroplasticGrid } from "@/lib/microplastics/types";
 
 const UK_CENTER_LAT = 54;
 const UK_CENTER_LON = -2;
@@ -29,6 +31,8 @@ interface IGlobeSceneProps {
   cities: ICityWeather[];
   showWeather: boolean;
   showClouds: boolean;
+  microplasticsGrid: IMicroplasticGrid | null;
+  showMicroplastics: boolean;
 }
 
 export function GlobeScene({
@@ -38,6 +42,8 @@ export function GlobeScene({
   cities,
   showWeather,
   showClouds,
+  microplasticsGrid,
+  showMicroplastics,
 }: IGlobeSceneProps) {
   return (
     <Canvas camera={ { position: INITIAL_CAMERA_POSITION, fov: 45 } }>
@@ -56,6 +62,7 @@ export function GlobeScene({
             />
           )) }
           { showWeather && cities.map((city) => <WeatherMarker key={ city.cityId } city={ city } />) }
+          { showMicroplastics && microplasticsGrid && <MicroplasticsLayer grid={ microplasticsGrid } /> }
           { showClouds && <Clouds /> }
         </RotatingGlobe>
       </Suspense>

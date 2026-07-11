@@ -1,13 +1,15 @@
 // Libs
 import { fetchRegionalIntensity, fetchNationalGenerationMix } from "@/lib/carbon-intensity/client";
 import { fetchGlobalWeather } from "@/lib/weather/client";
+import { fetchMicroplastics } from "@/lib/microplastics/client";
 import { GlobeExperience } from "@/components/globe-experience";
 
 export default async function Home() {
-  const [initialData, initialNationalMix, initialCities] = await Promise.all([
+  const [initialData, initialNationalMix, initialCities, initialMicroplastics] = await Promise.all([
     fetchRegionalIntensity(),
     fetchNationalGenerationMix(),
     fetchGlobalWeather(),
+    fetchMicroplastics(),
   ]);
 
   return (
@@ -16,6 +18,7 @@ export default async function Home() {
         initialData={ initialData }
         initialNationalMix={ initialNationalMix }
         initialCities={ initialCities }
+        initialMicroplastics={ initialMicroplastics }
       />
     </main>
   );
