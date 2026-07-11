@@ -18,12 +18,13 @@ export function AboutPanel({ nationalMix }: IAboutPanelProps) {
       </CardHeader>
       <CardContent className="space-y-4 text-sm text-white/70">
         <p>
-          Aeiforía tracks the UK&apos;s live National Grid carbon intensity — how much CO₂ is released generating each
-          unit of electricity, region by region, right now.
+          Aeiforía is a live environmental data globe. Solid pins track the UK&apos;s National Grid carbon intensity —
+          how much CO₂ is released generating each unit of electricity, region by region. Ring markers worldwide show
+          live temperature and wind.
         </p>
         <p>
-          Intensity swings several-fold across a single day as wind, solar, and gas fall in and out of the mix. Shifting
-          usage toward the low-carbon windows is one of the more effective everyday climate actions available.
+          UK grid intensity swings several-fold across a single day as wind, solar, and gas fall in and out of the mix.
+          Shifting usage toward the low-carbon windows is one of the more effective everyday climate actions available.
         </p>
         <div className="space-y-1 border-t border-white/10 pt-3">
           <p className="text-xs text-white/50">GB generation mix right now</p>
@@ -35,10 +36,9 @@ export function AboutPanel({ nationalMix }: IAboutPanelProps) {
           )) }
         </div>
         <p className="border-t border-white/10 pt-3 text-xs text-white/50">
-          Live visitor presence and cross-region collaboration are landing next — right now the globe format is ahead of
-          the data, that&apos;s by design.
+          Ocean plastic tracking and live visitor presence are landing next.
         </p>
-        <p className="text-xs text-white/40">Source: National Grid ESO Carbon Intensity API</p>
+        <p className="text-xs text-white/40">Sources: National Grid ESO Carbon Intensity API, Open-Meteo</p>
       </CardContent>
     </Card>
   );
