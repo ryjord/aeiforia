@@ -1,9 +1,8 @@
 "use client";
 
 // Libs
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Html } from "@react-three/drei";
-import { DoubleSide, Quaternion, Vector3 } from "three";
 import { latLonToVector3 } from "@/lib/geo";
 import { temperatureColor } from "@/lib/weather/color";
 import { WeatherIcon } from "@/components/weather-icon";
@@ -12,34 +11,45 @@ import { EARTH_RADIUS } from "./earth";
 // Types
 import type { ICityWeather } from "@/lib/weather/types";
 
-const RING_NORMAL = new Vector3(0, 0, 1);
+const MARKER_RADIUS = 0.018;
+const HOVER_SCALE = 1.7;
+const HIT_RADIUS = 0.06;
 
 interface IWeatherMarkerProps {
   city: ICityWeather;
 }
 
 export function WeatherMarker({ city }: IWeatherMarkerProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const position = latLonToVector3(city.lat, city.lon, EARTH_RADIUS + 0.02);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
+  const position = latLonToVector3(city.lat, city.lon, EARTH_RADIUS + 0.015);
   const color = temperatureColor(city.temperatureC);
-
-  // ringGeometry
-  const outwardRotation = useMemo(() => {
-    const normal = position.clone().normalize();
-    return new Quaternion().setFromUnitVectors(RING_NORMAL, normal);
-  }, [position]);
+  const isOpen = isHovered || isPinned;
 
   return (
     <group position={ position }>
       <mesh
-        quaternion={ outwardRotation }
+        onPointerOver={ (event) => {
+          event.stopPropagation();
+          setIsHovered(true);
+          document.body.style.cursor = "pointer";
+        } }
+        onPointerOut={ (event) => {
+          event.stopPropagation();
+          setIsHovered(false);
+          document.body.style.cursor = "auto";
+        } }
         onClick={ (event) => {
           event.stopPropagation();
-          setIsOpen((current) => !current);
+          setIsPinned((current) => !current);
         } }
       >
-        <ringGeometry args={ [0.018, 0.028, 16] } />
-        <meshBasicMaterial color={ color } side={ DoubleSide } />
+        <sphereGeometry args={ [HIT_RADIUS, 8, 8] } />
+        <meshBasicMaterial visible={ false } />
+      </mesh>
+      <mesh scale={ isOpen ? HOVER_SCALE : 1 }>
+        <sphereGeometry args={ [MARKER_RADIUS, 12, 12] } />
+        <meshBasicMaterial color={ color } />
       </mesh>
       { isOpen && (
         <Html distanceFactor={ 8 }>
