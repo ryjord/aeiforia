@@ -8,9 +8,11 @@ import type { Group } from "three";
 import { latLonToVector3 } from "@/lib/geo";
 import { Earth, EARTH_RADIUS } from "./earth";
 import { RegionMarker } from "./region-marker";
+import { WeatherMarker } from "./weather-marker";
 
 // Types
 import type { IRegionReading } from "@/lib/carbon-intensity/types";
+import type { ICityWeather } from "@/lib/weather/types";
 
 // Roughly the centre of Great Britain — the camera starts framed on this
 // point instead of the default (0,0,distance), which faces the Americas.
@@ -25,9 +27,10 @@ interface IGlobeSceneProps {
   regions: IRegionReading[];
   selectedRegionId: number | null;
   onSelectRegion: (region: IRegionReading) => void;
+  cities: ICityWeather[];
 }
 
-export function GlobeScene({ regions, selectedRegionId, onSelectRegion }: IGlobeSceneProps) {
+export function GlobeScene({ regions, selectedRegionId, onSelectRegion, cities }: IGlobeSceneProps) {
   return (
     <Canvas camera={ { position: INITIAL_CAMERA_POSITION, fov: 45 } }>
       <ambientLight intensity={ 0.6 } />
@@ -43,6 +46,9 @@ export function GlobeScene({ regions, selectedRegionId, onSelectRegion }: IGlobe
               isSelected={ region.regionId === selectedRegionId }
               onSelect={ onSelectRegion }
             />
+          )) }
+          { cities.map((city) => (
+            <WeatherMarker key={ city.cityId } city={ city } />
           )) }
         </RotatingGlobe>
       </Suspense>

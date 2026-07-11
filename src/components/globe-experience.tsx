@@ -8,25 +8,29 @@ import { AboutPanel } from "@/components/about-panel";
 
 // Types
 import type { IRegionalIntensity, IRegionReading, INationalGenerationMix } from "@/lib/carbon-intensity/types";
+import type { ICityWeather } from "@/lib/weather/types";
 
 const POLL_INTERVAL_MS = 5 * 60 * 1000;
 
 interface IGlobeExperienceProps {
   initialData: IRegionalIntensity;
   initialNationalMix: INationalGenerationMix;
+  initialCities: ICityWeather[];
 }
 
-export function GlobeExperience({ initialData, initialNationalMix }: IGlobeExperienceProps) {
+export function GlobeExperience({ initialData, initialNationalMix, initialCities }: IGlobeExperienceProps) {
   const [data, setData] = useState(initialData);
   const [nationalMix, setNationalMix] = useState(initialNationalMix);
+  const [cities, setCities] = useState(initialCities);
   const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
 
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const [regionalRes, nationalRes] = await Promise.all([
+        const [regionalRes, nationalRes, weatherRes] = await Promise.all([
           fetch("/api/carbon-intensity"),
           fetch("/api/national-mix"),
+          fetch("/api/weather"),
         ]);
 
         if (regionalRes.ok) {
@@ -38,8 +42,13 @@ export function GlobeExperience({ initialData, initialNationalMix }: IGlobeExper
           const next: INationalGenerationMix = await nationalRes.json();
           setNationalMix(next);
         }
+
+        if (weatherRes.ok) {
+          const next: ICityWeather[] = await weatherRes.json();
+          setCities(next);
+        }
       } catch (error) {
-        console.error("Failed to refresh carbon intensity:", error);
+        console.error("Failed to refresh live data:", error);
       }
     }, POLL_INTERVAL_MS);
 
@@ -54,7 +63,12 @@ export function GlobeExperience({ initialData, initialNationalMix }: IGlobeExper
 
   return (
     <div className="relative h-full w-full">
-      <GlobeScene regions={ data.regions } selectedRegionId={ selectedRegionId } onSelectRegion={ handleSelectRegion } />
+      <GlobeScene
+        regions={ data.regions }
+        selectedRegionId={ selectedRegionId }
+        onSelectRegion={ handleSelectRegion }
+        cities={ cities }
+      />
       <div className="pointer-events-none absolute top-6 left-6">
         <div className="pointer-events-auto">
           <StatPanel regions={ data.regions } selectedRegion={ selectedRegion } updatedAt={ data.from } />
