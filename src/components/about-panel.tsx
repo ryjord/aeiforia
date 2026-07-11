@@ -39,8 +39,15 @@ export function AboutPanel({ nationalMix }: IAboutPanelProps) {
           The cloud layer is a stylised atmosphere shell for visual depth, not live satellite imagery — the pins and
           dots are where the real data lives.
         </p>
-        <p className="text-xs text-white/50">Ocean plastic tracking and live visitor presence are landing next.</p>
-        <p className="text-xs text-white/40">Sources: National Grid ESO Carbon Intensity API, Open-Meteo</p>
+        <p className="text-xs text-white/50">
+          Faint points across the tropics show modelled ocean microplastic density — derived from how NASA&apos;s CYGNSS
+          satellites see wind roughen the sea surface, not direct visual detection. It&apos;s a 30-day rolling average
+          and only covers roughly 37°S–37°N, the satellites&apos; orbital range.
+        </p>
+        <p className="text-xs text-white/50">Live visitor presence is landing next.</p>
+        <p className="text-xs text-white/40">
+          Sources: National Grid ESO Carbon Intensity API, Open-Meteo, NASA PO.DAAC / CYGNSS (Univ. of Michigan)
+        </p>
       </CardContent>
     </Card>
   );
