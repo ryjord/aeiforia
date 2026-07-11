@@ -14,8 +14,6 @@ import { WeatherMarker } from "./weather-marker";
 import type { IRegionReading } from "@/lib/carbon-intensity/types";
 import type { ICityWeather } from "@/lib/weather/types";
 
-// Roughly the centre of Great Britain — the camera starts framed on this
-// point instead of the default (0,0,distance), which faces the Americas.
 const UK_CENTER_LAT = 54;
 const UK_CENTER_LON = -2;
 const CAMERA_DISTANCE = 7.5;
@@ -28,9 +26,10 @@ interface IGlobeSceneProps {
   selectedRegionId: number | null;
   onSelectRegion: (region: IRegionReading) => void;
   cities: ICityWeather[];
+  showWeather: boolean;
 }
 
-export function GlobeScene({ regions, selectedRegionId, onSelectRegion, cities }: IGlobeSceneProps) {
+export function GlobeScene({ regions, selectedRegionId, onSelectRegion, cities, showWeather }: IGlobeSceneProps) {
   return (
     <Canvas camera={ { position: INITIAL_CAMERA_POSITION, fov: 45 } }>
       <ambientLight intensity={ 0.6 } />
@@ -47,9 +46,7 @@ export function GlobeScene({ regions, selectedRegionId, onSelectRegion, cities }
               onSelect={ onSelectRegion }
             />
           )) }
-          { cities.map((city) => (
-            <WeatherMarker key={ city.cityId } city={ city } />
-          )) }
+          { showWeather && cities.map((city) => <WeatherMarker key={ city.cityId } city={ city } />) }
         </RotatingGlobe>
       </Suspense>
       <OrbitControls enablePan={ false } minDistance={ EARTH_RADIUS + 0.8 } maxDistance={ 12 } />

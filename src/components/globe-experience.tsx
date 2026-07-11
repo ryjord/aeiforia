@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { GlobeScene } from "@/components/globe/globe-scene";
 import { StatPanel } from "@/components/stat-panel";
 import { AboutPanel } from "@/components/about-panel";
+import { Button } from "@/components/ui/button";
 
 // Types
 import type { IRegionalIntensity, IRegionReading, INationalGenerationMix } from "@/lib/carbon-intensity/types";
@@ -23,6 +24,7 @@ export function GlobeExperience({ initialData, initialNationalMix, initialCities
   const [nationalMix, setNationalMix] = useState(initialNationalMix);
   const [cities, setCities] = useState(initialCities);
   const [selectedRegionId, setSelectedRegionId] = useState<number | null>(null);
+  const [showWeather, setShowWeather] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -68,6 +70,7 @@ export function GlobeExperience({ initialData, initialNationalMix, initialCities
         selectedRegionId={ selectedRegionId }
         onSelectRegion={ handleSelectRegion }
         cities={ cities }
+        showWeather={ showWeather }
       />
       <div className="pointer-events-none absolute top-6 left-6">
         <div className="pointer-events-auto">
@@ -78,6 +81,16 @@ export function GlobeExperience({ initialData, initialNationalMix, initialCities
         <div className="pointer-events-auto">
           <AboutPanel nationalMix={ nationalMix } />
         </div>
+      </div>
+      <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2">
+        <Button
+          variant={ showWeather ? "default" : "outline" }
+          size="sm"
+          className="pointer-events-auto bg-black/70 text-white backdrop-blur-md hover:bg-black/90"
+          onClick={ () => setShowWeather((current) => !current) }
+        >
+          { showWeather ? `Hide global weather (${cities.length})` : `Show global weather (${cities.length})` }
+        </Button>
       </div>
     </div>
   );
